@@ -27,6 +27,10 @@
     "message": "Hide comments",
     "description": "option hide comments"
   },
+  "popup_hide_replies": {
+    "message": "Hide replies",
+    "description": "option hide replies"
+  },
   "popup_hide_content": {
     "message": "Display illustration and \"Show comments\" button",
     "description": "option display button"
