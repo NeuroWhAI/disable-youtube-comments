@@ -9,6 +9,7 @@ const observer = new MutationObserver(function () {
   if (comments) {
     observer.disconnect()
     //console.log(chrome.i18n.getMessage("comments_disabled"))
+    hideReplies()
     hideComments()
 
     observerReplies.observe(comments, {
@@ -28,14 +29,7 @@ observer.observe(document.documentElement, {
 });
 
 const observerReplies = new MutationObserver(function () {
-  //hide replies
-  chrome.storage.local.get(['hide_replies'], function (result) {
-    if (result['hide_replies'] || typeof (result['hide_replies']) === 'undefined') {
-
-      document.querySelectorAll('#replies')
-        .forEach((replies) => replies.style.display = "none")
-    }
-  });
+  hideReplies()
 });
 
 /**
@@ -78,15 +72,6 @@ function showHideElement(element) {
 function hideComments() {
   let comments = document.getElementById("comments")
 
-  //hide replies
-  chrome.storage.local.get(['hide_replies'], function (result) {
-    if (result['hide_replies'] || typeof (result['hide_replies']) === 'undefined') {
-
-      document.querySelectorAll('#replies')
-        .forEach((replies) => replies.style.display = "none")
-    }
-  });
-
   //hide comments
   chrome.storage.local.get(['hide_comments'], function (result) {
     if (result['hide_comments'] || typeof (result['hide_comments']) === 'undefined') {
@@ -123,6 +108,19 @@ function showCommentsClick() {
     top: document.getElementById("meta-contents").offsetTop,
     behavior: 'smooth'
   })
+}
+
+/**
+ * Hide youtube replies
+ */
+function hideReplies() {
+  chrome.storage.local.get(['hide_replies'], function (result) {
+    if (result['hide_replies'] || typeof (result['hide_replies']) === 'undefined') {
+
+      document.querySelectorAll('#replies')
+        .forEach((replies) => replies.style.display = "none")
+    }
+  });
 }
 
 function localize() {
