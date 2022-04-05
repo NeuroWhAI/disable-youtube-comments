@@ -58,10 +58,12 @@ function switchClick(e){
 //Get values from storage
 getStorageValue('hide_comments')
 getStorageValue('hide_content')
+getStorageValue('hide_replies')
 
 //Add click listener
 document.getElementById("hide_comments").addEventListener("click", switchClick);
 document.getElementById("hide_content").addEventListener("click", switchClick);
+document.getElementById("hide_replies").addEventListener("click", switchClick);
 
 //Localize
 document.querySelectorAll('[data-locale]').forEach(elem => {

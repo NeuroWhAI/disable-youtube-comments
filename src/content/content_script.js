@@ -5,10 +5,18 @@
  */
 const observer = new MutationObserver(function () {
   //checks if the element exists in the DOM
-  if (document.getElementById("comments")) {
+  let comments = document.getElementById("comments")
+  if (comments) {
     observer.disconnect()
     //console.log(chrome.i18n.getMessage("comments_disabled"))
     hideComments()
+
+    observerReplies.observe(comments, {
+      attributes: false,
+      childList: true,
+      characterData: false,
+      subtree: true
+    });
   }
 });
 
@@ -19,6 +27,16 @@ observer.observe(document.documentElement, {
   subtree: true
 });
 
+const observerReplies = new MutationObserver(function () {
+  //hide replies
+  chrome.storage.local.get(['hide_replies'], function (result) {
+    if (result['hide_replies'] || typeof (result['hide_replies']) === 'undefined') {
+
+      document.querySelectorAll('#replies')
+        .forEach((replies) => replies.style.display = "none")
+    }
+  });
+});
 
 /**
  * Loads an HTML document that will be injected on youtube
@@ -59,6 +77,15 @@ function showHideElement(element) {
  */
 function hideComments() {
   let comments = document.getElementById("comments")
+
+  //hide replies
+  chrome.storage.local.get(['hide_replies'], function (result) {
+    if (result['hide_replies'] || typeof (result['hide_replies']) === 'undefined') {
+
+      document.querySelectorAll('#replies')
+        .forEach((replies) => replies.style.display = "none")
+    }
+  });
 
   //hide comments
   chrome.storage.local.get(['hide_comments'], function (result) {
